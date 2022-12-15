@@ -16,7 +16,7 @@ import java.util.UUID;
 @RequestMapping(value = "/orders",produces = "application/vnd.api.v1+json")
 public class OrderController {
 
-    private OrderApplicationService orderApplicationService;
+    private final OrderApplicationService orderApplicationService;
 
     public OrderController(OrderApplicationService orderApplicationService) {
         this.orderApplicationService = orderApplicationService;
