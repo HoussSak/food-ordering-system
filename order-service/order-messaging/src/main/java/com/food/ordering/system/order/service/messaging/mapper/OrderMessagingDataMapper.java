@@ -4,7 +4,9 @@ import com.food.odrering.system.order.service.domain.entity.Order;
 import com.food.odrering.system.order.service.domain.event.OrderCancelledEvent;
 import com.food.odrering.system.order.service.domain.event.OrderCreatedEvent;
 import com.food.odrering.system.order.service.domain.event.OrderPaidEvent;
+import com.food.ordering.system.domain.valueobject.PaymentStatus;
 import com.food.ordering.system.kafka.order.avro.model.*;
+import com.food.ordering.system.order.service.domain.dto.message.PaymentReponse;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -54,6 +56,20 @@ public class OrderMessagingDataMapper {
                                 .setQuantity(orderItem.getQuantity())
                                 .build()).collect(Collectors.toList()))
                 .setCreatedAt(domainEvent.getCreatedAt().toInstant())
+                .build();
+    }
+
+    public PaymentReponse paymentResponseAvroModelToPaymentResponse(PaymentResponseAvroModel paymentResponseAvroModel) {
+        return PaymentReponse.builder()
+                .id(paymentResponseAvroModel.getId())
+                .sagaId(paymentResponseAvroModel.getSagaId())
+                .paymentId(paymentResponseAvroModel.getPaymentId())
+                .customerId(paymentResponseAvroModel.getCustomerId())
+                .orderId(paymentResponseAvroModel.getOrderId())
+                .price(paymentResponseAvroModel.getPrice())
+                .createdAt(paymentResponseAvroModel.getCreatedAt())
+                .paymentStatus(PaymentStatus.valueOf(paymentResponseAvroModel.getPaymentStatus().name()))
+                .failureMessages(paymentResponseAvroModel.getFailureMessages())
                 .build();
     }
 }
