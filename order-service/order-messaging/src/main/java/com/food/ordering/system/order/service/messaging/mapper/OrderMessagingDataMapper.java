@@ -4,9 +4,11 @@ import com.food.odrering.system.order.service.domain.entity.Order;
 import com.food.odrering.system.order.service.domain.event.OrderCancelledEvent;
 import com.food.odrering.system.order.service.domain.event.OrderCreatedEvent;
 import com.food.odrering.system.order.service.domain.event.OrderPaidEvent;
+import com.food.ordering.system.domain.valueobject.OrderApprovalStatus;
 import com.food.ordering.system.domain.valueobject.PaymentStatus;
 import com.food.ordering.system.kafka.order.avro.model.*;
 import com.food.ordering.system.order.service.domain.dto.message.PaymentReponse;
+import com.food.ordering.system.order.service.domain.dto.message.RestaurantApprovalResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -70,6 +72,20 @@ public class OrderMessagingDataMapper {
                 .createdAt(paymentResponseAvroModel.getCreatedAt())
                 .paymentStatus(PaymentStatus.valueOf(paymentResponseAvroModel.getPaymentStatus().name()))
                 .failureMessages(paymentResponseAvroModel.getFailureMessages())
+                .build();
+    }
+
+    public RestaurantApprovalResponse restaurantApprovalResponseAvroModelToRestaurantApprovalResponse
+            (RestaurantApprovalResponseAvroModel restaurantApprovalResponseAvroModel) {
+
+        return RestaurantApprovalResponse.builder()
+                .id(restaurantApprovalResponseAvroModel.getId())
+                .sagaId(restaurantApprovalResponseAvroModel.getSagaId())
+                .orderId(restaurantApprovalResponseAvroModel.getOrderId())
+                .restaurantId(restaurantApprovalResponseAvroModel.getRestaurantId())
+                .createdAt(restaurantApprovalResponseAvroModel.getCreatedAt())
+                .orderApprovalStatus(OrderApprovalStatus.valueOf(restaurantApprovalResponseAvroModel.getOrderApprovalStatus().name()))
+                .failureMessages(restaurantApprovalResponseAvroModel.getFailureMessages())
                 .build();
     }
 }
