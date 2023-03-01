@@ -42,8 +42,10 @@ public class PaymentOutboxHelper {
             throw new OrderDomainException("Could not save OrderPaymentOutboxMessage with outbox id: "+orderPaymentOutboxMessage.getId());
         }
         log.info("OrderPaymentOutboxMessage saved with id: {}, sending to message bus!", orderPaymentOutboxMessage.getId());
-
-
+    }
+    @Transactional
+    public void deletePaymentOutboxMessageByOutboxStatusAndSagaStatus(OutboxStatus outboxStatus,SagaStatus...sagaStatus) {
+        paymentOutboxRepository.deleteByTypeAndOutboxStatusAndSagaStatus(ORDER_SAGA_NAME,outboxStatus,sagaStatus);
     }
 
 }
